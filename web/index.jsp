@@ -1,4 +1,5 @@
 <%@ page import="com.mysoft.Main" %>
+<%@ page import="com.mysoft.servlet.MyServlet" %>
 <%--
   Created by IntelliJ IDEA.
   User: Игорь
@@ -14,6 +15,7 @@
   <body>
   This is my first web app <br>
   $END$ <br>
-  <%=Main.test()%>
+  <%=Main.text()%>
+  <%= 9-24%>
   </body>
 </html>
