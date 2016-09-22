@@ -1,5 +1,6 @@
 package com.mysoft;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,27 +8,31 @@ import java.util.List;
  * Created by Игорь on 19.09.2016.
  */
 public class DAO {
-
-    public static List<Post> posts;
-
-    static {
-        posts = new ArrayList<Post>();
-        posts.add(new Post(1, "Статья №1"));
-        posts.add(new Post(2, "Статья №2"));
-        posts.add(new Post(3, "Статья №3"));
-        posts.add(new Post(4, "Статья №4"));
-        posts.add(new Post(5, "Статья №5"));
+    public static Connection getConnection() throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.jdbc.Driver");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "root");
     }
 
-    public static List<Post> getPosts() {
+    public static List<Post> getPosts() throws SQLException, ClassNotFoundException {
+        ArrayList<Post> posts;
+        try (
+                Connection c = getConnection();
+                PreparedStatement ps = c.prepareStatement("SELECT id, txt FROM posts");
+                ResultSet resultSet = ps.executeQuery();
+        ) {
+            posts = new ArrayList<Post>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt(1);
+                String txt = resultSet.getString(2);
+                posts.add(new Post(id, txt));
+            }
+        }
         return posts;
     }
 
     public static void deletePost(int id) {
-        for (Post p : posts) {
-            if (p.id == id) {
-                posts.remove(p);
-            }
-        }
+    }
+
+    public static void addPost(String txt) {
     }
 }

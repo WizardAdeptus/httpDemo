@@ -15,7 +15,6 @@
   <body>
   This is my first web app <br>
   $END$ <br>
-  <%=Main.text()%>
   <%= 9-24%>
   </body>
 </html>

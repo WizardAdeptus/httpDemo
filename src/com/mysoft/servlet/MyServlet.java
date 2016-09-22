@@ -3,6 +3,7 @@ package com.mysoft.servlet;
 import com.mysoft.DAO;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Created by Игорь on 30.08.2016.
@@ -15,7 +16,13 @@ public class MyServlet extends javax.servlet.http.HttpServlet {
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
 
-        request.setAttribute("posts", DAO.getPosts());
+        try {
+            request.setAttribute("posts", DAO.getPosts());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         request.getRequestDispatcher("WEB-INF/posts.jsp").forward(request, response);
     }
 }
