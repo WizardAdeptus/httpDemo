@@ -31,8 +31,30 @@ public class DAO {
     }
 
     public static void deletePost(int id) {
+        try (
+                Connection c = getConnection();
+                PreparedStatement ps = c.prepareStatement("DELETE FROM posts WHERE id=?");
+                ) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void addPost(String txt) {
+        try (
+                Connection c = getConnection();
+                PreparedStatement ps = c.prepareStatement("INSERT INTO posts (txt) VALUES (?)");
+        ) {
+            ps.setString(1, txt);
+            ps.executeUpdate();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
