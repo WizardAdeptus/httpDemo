@@ -1,9 +1,6 @@
 package com.mysoft;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class DAO {
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
@@ -11,35 +8,17 @@ public class DAO {
         return DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "root");
     }
 
-    public static List<Post> getPosts() throws SQLException, ClassNotFoundException {
-        ArrayList<Post> posts;
+    public static Post getPosts() throws SQLException, ClassNotFoundException {
+        Post post;
         try (
                 Connection c = getConnection();
-                PreparedStatement ps = c.prepareStatement("SELECT id, txt FROM posts");
+                PreparedStatement ps = c.prepareStatement("SELECT id, txt FROM posts ORDER BY id DESC LIMIT 1");
                 ResultSet resultSet = ps.executeQuery();
         ) {
-            posts = new ArrayList<Post>();
-            while (resultSet.next()) {
-                int id = resultSet.getInt(1);
-                String txt = resultSet.getString(2);
-                posts.add(new Post(id, txt));
-            }
+            resultSet.next();
+            post = new Post(resultSet.getInt(1), resultSet.getString(2));
         }
-        return posts;
-    }
-
-    public static void deletePost(int id) {
-        try (
-                Connection c = getConnection();
-                PreparedStatement ps = c.prepareStatement("DELETE FROM posts WHERE id=?");
-                ) {
-            ps.setInt(1, id);
-            ps.executeUpdate();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return post;
     }
 
     public static void addPost(String txt) {

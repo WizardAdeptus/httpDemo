@@ -10,11 +10,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@WebServlet(name = "AddPost", urlPatterns = "/add")
-public class AddPost extends HttpServlet {
+@WebServlet(name = "PostServlet", urlPatterns = "/add")
+public class PostServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         String txt = request.getParameter("txt");
-        DAO.addPost(txt);
+
+        if (!"".equals(txt.trim())) {
+            DAO.addPost(txt);
+        }
         response.sendRedirect("/posts");
     }
 
